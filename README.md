@@ -7,7 +7,7 @@ MYSQL_ROOT_PASSWORD=root_password
 MYSQL_USER=user
 MYSQL_PASSWORD=password
 ```
-setup nginx.conf file
+Setup nginx.conf file
 ```
 server {
         listen 80;
@@ -78,7 +78,7 @@ server {
 		client_max_body_size 100M;
 }
 ```
-Create upload.ini for upload content on wordpress.
+Create file upload.ini for upload content on wordpress.
 ```
 file_uploads = On
 memory_limit = 64M
