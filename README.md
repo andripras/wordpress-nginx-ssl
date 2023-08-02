@@ -78,3 +78,12 @@ server {
 		client_max_body_size 100M;
 }
 ```
+Creata upload.ini for upload content on wordpress.
+```
+file_uploads = On
+memory_limit = 64M
+upload_max_filesize = 64M
+post_max_size = 64M
+max_execution_time = 600;
+max_input_vars = 2000;
+```
