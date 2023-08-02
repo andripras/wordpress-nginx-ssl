@@ -87,3 +87,78 @@ post_max_size = 64M
 max_execution_time = 600;
 max_input_vars = 2000;
 ```
+and then, create docker-compose.yml file.
+```
+version: '3' 
+services:
+  database:
+    image: mysql:8.0
+    container_name: database
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MYSQL_DATABASE=wordpress
+    volumes:
+      - ./database:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    networks:
+      - app-network
+  
+  wordpress:
+    depends_on:
+      - database
+    image: wordpress:5.8-php7.4-fpm
+    container_name: wordpress
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - WORDPRESS_DB_HOST=database:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+    networks:
+      - app-network
+  
+  phpmyadmin:
+    depends_on:
+      - database
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      #- '8080:80'
+      - '8081:80'
+    environment:
+      PMA_HOST: database
+      MYSQL_ROOT_PASSWORD: 1nfr4t34m
+    #env_file: .env
+    #environment:
+      #- MYSQL_DATABASE=wordpress
+    volumes:
+      - ./conf.php/upload.ini:/usr/local/etc/php/conf.d/upload.ini
+    networks:
+      - app-network
+  
+  nginx:
+    depends_on:
+      - wordpress
+    image: nginx:1.15.12-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./wordpress:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - ./ssl:/etc/ssl
+    networks:
+      - app-network 
+
+networks:
+  app-network:
+    driver: bridge
+```
+compile docker-compose file using **docker-compose up -d**
