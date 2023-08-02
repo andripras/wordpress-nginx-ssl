@@ -132,7 +132,7 @@ services:
       - '8081:80'
     environment:
       PMA_HOST: database
-      MYSQL_ROOT_PASSWORD: 1nfr4t34m
+      MYSQL_ROOT_PASSWORD: root_password
     #env_file: .env
     #environment:
       #- MYSQL_DATABASE=wordpress
