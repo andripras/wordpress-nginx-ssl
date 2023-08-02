@@ -1,6 +1,6 @@
 # wordpress-nginx-ssl
 
-first you must create environtment (.env) file for mysql databases
+First you must create environtment (.env) file for mysql databases
 
 ```
 MYSQL_ROOT_PASSWORD=root_password
